@@ -19,8 +19,11 @@ function Stage:initialize()
 end
 
 function Stage:update()
+    -- get delta time
+    dt = love.timer.getDelta()
+
     -- process all current entities
-    self.rootEntity:updateChildren()
+    self.rootEntity:updateChildren(dt)
 
     -- add entities that have been queued up
     while not self.addEntityQueue:empty() do

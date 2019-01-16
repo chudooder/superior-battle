@@ -30,21 +30,31 @@ function Entity:initialize(arg)
         arg.angle or 0,
         arg.sx or 1,
         arg.sy or 1)
+
+    -- list of this entity's components
+    self.components = {}
 end
 
 -- called by containing Stage to update objects recursively
-function Entity:updateChildren()
+function Entity:updateChildren(dt)
     for eid, child in pairs(self.children) do
-        child:update()
-        child:updateChildren()
+        child:update(dt)
+        child:updateChildren(dt)
     end
 end
 
--- gotta define these here
-function Entity:update()
+-- call each component's update method
+--  dt [number] time delta in seconds since last frame
+function Entity:update(dt)
+    for name, component in pairs(self.components) do
+        component:update(dt)
+    end
 end
 
 function Entity:draw()
+    for name, component in pairs(self.components) do
+        component:draw()
+    end
 end
 
 -- converts an x, y position in local space to world space
@@ -69,6 +79,19 @@ function Entity:getTransform(transform)
     end
     self.parent:getTransform(transform)
     transform:apply(self.localTransform)
+end
+
+-- Component manipulation
+
+function Entity:addComponent(component)
+    component.entity = self
+    local name = component.class.name
+    self.components[name] = component
+end
+
+function Entity:removeComponent(component)
+    local name = component.class.name
+    self.components[name] = nil
 end
 
 -- exports

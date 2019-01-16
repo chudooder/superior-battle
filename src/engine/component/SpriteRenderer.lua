@@ -1,8 +1,9 @@
 local class = require('lib.middleclass')
+local Component = require('src.engine.component.Component')
 
-local SpriteRenderer = class('SpriteRenderer')
-function SpriteRenderer:initialize(entity, image)
-    self.entity = entity
+local SpriteRenderer = class('SpriteRenderer', Component)
+function SpriteRenderer:initialize(image)
+    Component.initialize(self)
     self.image = image
     -- maintain a transform object to calculate where to draw
     self.transform = love.math.newTransform()
