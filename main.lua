@@ -1,10 +1,12 @@
 local Stage = require('src.engine.Stage')
+local SpriteSheet = require('src.engine.render.SpriteSheet')
 local TestEntity = require('src.game.TestEntity')
 
 local currentStage = Stage:new()
 
-
 -- testing
+local spriteSheet = SpriteSheet:new('res/tank')
+
 local entity = TestEntity:new{x=300, y=100, angle=(3.14159 / 8)}
 local entity2 = TestEntity:new{parent=entity, x=300, y=0, angle=(3.14159 / 4), sx=0.5, sy=0.5}
 entity2.text = "at an angle!"
