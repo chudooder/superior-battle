@@ -19,7 +19,9 @@ function TestEntity:initialize(arg)
     self.text = "Hello world!"
 
     -- add components
-    local sr = SpriteRenderer:new(love.graphics.newImage("res/chudooder-256.png"))
+    local sr = SpriteRenderer:new({
+                    image = love.graphics.newImage("res/chudooder-256-animatetest.png")
+                    ,numOfFrames = 5, animationDuration = 1})
     
     -- the spinner component is not defined as a class explicitly, but we can
     -- anonymously define it here using the functions below
