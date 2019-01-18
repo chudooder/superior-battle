@@ -36,7 +36,11 @@ function SpriteSheet:_parseMetadata()
 
     -- load animations
     for name, animDef in pairs(self.metadata.animations) do
-        self.animations[name] = Animation:new(self, animDef.frames)
+        local frames = {}
+        for i, quadName in pairs(animDef.frames) do
+            frames[i] = self.quads[quadName]
+        end
+        self.animations[name] = Animation:new(name, self, frames, animDef.length)
     end
 end
 
@@ -52,21 +56,16 @@ end
 -- single-quad sprites (like terrain pieces) as animations manually.
 function SpriteSheet:getQuadAsAnim(name)
     local keyName = '__auto__' .. name
-    -- look up in cache
-    if self.animations[keyName] ~= nil then
-        return self.animations[keyName]
+    -- put in cache if missing
+    if self.animations[keyName] == nil then
+        local anim = Animation:new(keyName, self, {self.quads[name]}, 1)
+        self.animations[keyName] = anim
     end
-
-    -- otherwise create, put in cache, and return
-    local anim = Animation:new(self, {self.quads[name]}, 1)
-    self.animations[keyName] = anim
-    return anim
+    return self.animations[keyName]
 end
 
 function SpriteSheet:getAnimation(name)
     return self.animations[name]
 end
-
-
 
 return SpriteSheet
